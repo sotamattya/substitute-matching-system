@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      UserRole @default(TEACHER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  createdSubstituteRequests SubstituteRequest[] @relation("CreatedRequests")
+  acceptedSubstituteRequests SubstituteRequest[] @relation("AcceptedRequests")
+  shifts                   Shift[]
+
+  @@map("users")
+}
+
+model Shift {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  startTime   DateTime
+  endTime     DateTime
+  subject     String
+  grade       String?
+  location    String?
+  status      ShiftStatus @default(SCHEDULED)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  teacherId   String
+  teacher     User     @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  substituteRequests SubstituteRequest[]
+
+  @@map("shifts")
+}
+
+model SubstituteRequest {
+  id          String   @id @default(cuid())
+  reason      String
+  status      RequestStatus @default(PENDING)
+  priority    Priority @default(NORMAL)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  shiftId     String
+  shift       Shift    @relation(fields: [shiftId], references: [id], onDelete: Cascade)
+  createdById String
+  createdBy   User     @relation("CreatedRequests", fields: [createdById], references: [id], onDelete: Cascade)
+  acceptedById String?
+  acceptedBy  User?    @relation("AcceptedRequests", fields: [acceptedById], references: [id], onDelete: SetNull)
+
+  @@map("substitute_requests")
+}
+
+enum UserRole {
+  TEACHER
+  ADMIN
+}
+
+enum ShiftStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+}
+
+enum RequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  CANCELLED
+}
+
+enum Priority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
