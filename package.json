@@ -13,31 +13,32 @@
     "db:studio": "prisma studio"
   },
   "dependencies": {
+    "@fullcalendar/daygrid": "^6.1.10",
+    "@fullcalendar/interaction": "^6.1.10",
+    "@fullcalendar/react": "^6.1.10",
+    "@fullcalendar/timegrid": "^6.1.10",
+    "@mantine/core": "^7.3.2",
+    "@mantine/dates": "^7.3.2",
+    "@mantine/form": "^7.3.2",
+    "@mantine/hooks": "^7.3.2",
+    "@mantine/notifications": "^7.3.2",
+    "@prisma/client": "^5.7.0",
+    "@tabler/icons-react": "^3.35.0",
+    "bcryptjs": "^2.4.3",
     "next": "15.0.0",
+    "next-auth": "^4.24.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "@prisma/client": "^5.7.0",
-    "next-auth": "^4.24.5",
-    "@mantine/core": "^7.3.2",
-    "@mantine/hooks": "^7.3.2",
-    "@mantine/form": "^7.3.2",
-    "@mantine/notifications": "^7.3.2",
-    "@mantine/dates": "^7.3.2",
-    "@fullcalendar/react": "^6.1.10",
-    "@fullcalendar/daygrid": "^6.1.10",
-    "@fullcalendar/timegrid": "^6.1.10",
-    "@fullcalendar/interaction": "^6.1.10",
-    "sass": "^1.69.5",
-    "bcryptjs": "^2.4.3"
+    "sass": "^1.69.5"
   },
   "devDependencies": {
-    "typescript": "^5.3.0",
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.10.0",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
-    "@types/bcryptjs": "^2.4.6",
     "eslint": "^8.56.0",
     "eslint-config-next": "15.0.0",
-    "prisma": "^5.7.0"
+    "prisma": "^5.7.0",
+    "typescript": "^5.3.0"
   }
 }

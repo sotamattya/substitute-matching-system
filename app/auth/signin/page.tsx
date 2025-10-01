@@ -3,8 +3,8 @@
 import { useState } from 'react'
 import { signIn, getSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { Button, TextInput, Paper, Title, Container } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
+import { Button, TextInput, Paper, Title, Container, Group, Anchor } from '@mantine/core'
+import { showSuccessNotification, showErrorNotification } from '@/components/ui/NotificationManager'
 
 export default function SignIn() {
   const [email, setEmail] = useState('')
@@ -17,32 +17,27 @@ export default function SignIn() {
     setLoading(true)
 
     try {
+      console.log('ログイン試行:', { email, password })
+      
       const result = await signIn('credentials', {
         email,
         password,
         redirect: false,
       })
 
+      console.log('ログイン結果:', result)
+
       if (result?.error) {
-        notifications.show({
-          title: 'エラー',
-          message: 'ログインに失敗しました。',
-          color: 'red',
-        })
+        console.log('ログインエラー:', result.error)
+        showErrorNotification('エラー', `ログインに失敗しました: ${result.error}`)
       } else {
-        notifications.show({
-          title: '成功',
-          message: 'ログインしました。',
-          color: 'green',
-        })
+        console.log('ログイン成功、リダイレクト中...')
+        showSuccessNotification('成功', 'ログインしました。')
         router.push('/')
       }
     } catch (error) {
-      notifications.show({
-        title: 'エラー',
-        message: '予期しないエラーが発生しました。',
-        color: 'red',
-      })
+      console.log('予期しないエラー:', error)
+      showErrorNotification('エラー', '予期しないエラーが発生しました。')
     } finally {
       setLoading(false)
     }
@@ -50,7 +45,7 @@ export default function SignIn() {
 
   return (
     <Container size={420} my={40}>
-      <Title ta="center" mb="xl">
+      <Title ta="center" mb="xl" style={{ color: '#000000' }}>
         代講マッチングシステム
       </Title>
       
@@ -83,6 +78,17 @@ export default function SignIn() {
           >
             ログイン
           </Button>
+          
+          <Group justify="center" mt="md">
+            <Anchor
+              component="button"
+              type="button"
+              size="sm"
+              onClick={() => router.push('/auth/signup')}
+            >
+              アカウントをお持ちでない方はこちら
+            </Anchor>
+          </Group>
         </form>
       </Paper>
     </Container>
