@@ -191,6 +191,38 @@ textarea:focus {
   box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
 }
 
+/* 入力フィールドのテキスト色を強制設定 */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea,
+select {
+  color: #1a1a1a !important;
+  background-color: #ffffff !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af !important;
+}
+
+/* Mantineの入力フィールドのスタイル */
+.mantine-Input-input {
+  color: #1a1a1a !important;
+  background-color: #ffffff !important;
+  border-color: #e0e0e0 !important;
+}
+
+.mantine-Input-input::placeholder {
+  color: #9ca3af !important;
+}
+
+.mantine-Input-input:focus {
+  border-color: #1a73e8 !important;
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2) !important;
+}
+
 /* ボタンのホバー効果 */
 button:not(:disabled):hover {
   transform: translateY(-1px);
