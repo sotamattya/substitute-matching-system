@@ -54,10 +54,11 @@ export default function Home() {
                 </Text>
               </div>
               <Button
-                variant="outline"
+                variant="filled"
                 size="sm"
                 color="red"
                 onClick={() => signOut({ callbackUrl: '/auth/signin' })}
+                className="bg-red-500 hover:bg-red-600 text-white border-0"
               >
                 ログアウト
               </Button>

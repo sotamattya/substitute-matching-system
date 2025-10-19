@@ -39,6 +39,11 @@ const theme = createTheme({
         styles: {
           root: {
             color: '#ffffff',
+            fontWeight: 500,
+            '&:hover': {
+              transform: 'translateY(-1px)',
+              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+            },
           },
         },
       },
