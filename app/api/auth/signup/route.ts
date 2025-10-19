@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
-import { prisma } from '@/lib/db'
+import { getPrisma } from '@/lib/db/client'
 
 export async function POST(request: NextRequest) {
   try {
@@ -28,6 +28,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: 'パスワードは6文字以上で入力してください' },
         { status: 400 }
+      )
+    }
+
+    // Prismaクライアントを取得
+    const prisma = await getPrisma()
+    if (!prisma) {
+      return NextResponse.json(
+        { error: 'データベース接続が利用できません' },
+        { status: 503 }
       )
     }
 

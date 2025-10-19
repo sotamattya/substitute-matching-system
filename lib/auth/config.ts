@@ -1,21 +1,7 @@
 import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import bcrypt from 'bcryptjs'
-
-// ビルド時にはPrismaを動的にインポート
-const getPrisma = async () => {
-  // ビルド時やデータベースURLがない場合はnullを返す
-  if (!process.env.DATABASE_URL || process.env.NEXT_PHASE === 'phase-production-build') {
-    return null
-  }
-  try {
-    const { prisma } = await import('@/lib/db')
-    return prisma
-  } catch (error) {
-    console.error('Failed to import Prisma:', error)
-    return null
-  }
-}
+import { getPrisma } from '@/lib/db/client'
 
 export const authOptions: NextAuthOptions = {
   providers: [

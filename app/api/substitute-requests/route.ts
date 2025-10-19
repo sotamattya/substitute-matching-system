@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { prisma } from '@/lib/db'
+import { getPrisma } from '@/lib/db/client'
 
 // 代講依頼一覧の取得
 export async function GET(request: NextRequest) {
@@ -18,6 +18,14 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const status = searchParams.get('status')
     const priority = searchParams.get('priority')
+
+    const prisma = await getPrisma()
+    if (!prisma) {
+      return NextResponse.json(
+        { error: 'データベース接続が利用できません' },
+        { status: 503 }
+      )
+    }
 
     const substituteRequests = await prisma.substituteRequest.findMany({
       where: {
@@ -87,6 +95,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: '必須フィールドが不足しています' },
         { status: 400 }
+      )
+    }
+
+    const prisma = await getPrisma()
+    if (!prisma) {
+      return NextResponse.json(
+        { error: 'データベース接続が利用できません' },
+        { status: 503 }
       )
     }
 

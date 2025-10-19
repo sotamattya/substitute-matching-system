@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { prisma } from '@/lib/db'
+import { getPrisma } from '@/lib/db/client'
 
 // 個別シフトの取得
 export async function GET(
@@ -19,6 +19,14 @@ export async function GET(
     }
 
     const { id } = await params
+    const prisma = await getPrisma()
+    if (!prisma) {
+      return NextResponse.json(
+        { error: 'データベース接続が利用できません' },
+        { status: 503 }
+      )
+    }
+
     const shift = await prisma.shift.findUnique({
       where: {
         id
@@ -85,6 +93,14 @@ export async function PUT(
 
     const { id } = await params
     const { title, description, startTime, endTime, subject, grade, location, status } = await request.json()
+
+    const prisma = await getPrisma()
+    if (!prisma) {
+      return NextResponse.json(
+        { error: 'データベース接続が利用できません' },
+        { status: 503 }
+      )
+    }
 
     // シフトの存在確認と権限チェック
     const existingShift = await prisma.shift.findUnique({
@@ -179,6 +195,14 @@ export async function DELETE(
     }
 
     const { id } = await params
+    const prisma = await getPrisma()
+    if (!prisma) {
+      return NextResponse.json(
+        { error: 'データベース接続が利用できません' },
+        { status: 503 }
+      )
+    }
+
     // シフトの存在確認と権限チェック
     const existingShift = await prisma.shift.findUnique({
       where: {

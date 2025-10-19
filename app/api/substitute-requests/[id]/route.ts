@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { prisma } from '@/lib/db'
+import { getPrisma } from '@/lib/db/client'
 
 // 個別代講依頼の取得
 export async function GET(
@@ -19,6 +19,14 @@ export async function GET(
     }
 
     const { id } = await params
+    const prisma = await getPrisma()
+    if (!prisma) {
+      return NextResponse.json(
+        { error: 'データベース接続が利用できません' },
+        { status: 503 }
+      )
+    }
+
     const substituteRequest = await prisma.substituteRequest.findUnique({
       where: {
         id
@@ -92,6 +100,14 @@ export async function PUT(
       return NextResponse.json(
         { error: '無効なアクションです' },
         { status: 400 }
+      )
+    }
+
+    const prisma = await getPrisma()
+    if (!prisma) {
+      return NextResponse.json(
+        { error: 'データベース接続が利用できません' },
+        { status: 503 }
       )
     }
 
@@ -245,6 +261,14 @@ export async function DELETE(
     }
 
     const { id } = await params
+    const prisma = await getPrisma()
+    if (!prisma) {
+      return NextResponse.json(
+        { error: 'データベース接続が利用できません' },
+        { status: 503 }
+      )
+    }
+
     // 代講依頼の存在確認と権限チェック
     const substituteRequest = await prisma.substituteRequest.findUnique({
       where: {

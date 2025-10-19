@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { prisma } from '@/lib/db'
+import { getPrisma } from '@/lib/db/client'
 
 // シフト一覧の取得
 export async function GET(request: NextRequest) {
@@ -18,6 +18,14 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const startDate = searchParams.get('start')
     const endDate = searchParams.get('end')
+
+    const prisma = await getPrisma()
+    if (!prisma) {
+      return NextResponse.json(
+        { error: 'データベース接続が利用できません' },
+        { status: 503 }
+      )
+    }
 
     const shifts = await prisma.shift.findMany({
       where: {
@@ -99,6 +107,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: '終了時間は開始時間より後である必要があります' },
         { status: 400 }
+      )
+    }
+
+    const prisma = await getPrisma()
+    if (!prisma) {
+      return NextResponse.json(
+        { error: 'データベース接続が利用できません' },
+        { status: 503 }
       )
     }
 
