@@ -20,10 +20,10 @@ export default function Home() {
 
   if (status === 'loading') {
     return (
-      <main className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 mx-auto"></div>
-          <p className="mt-4 text-gray-600">読み込み中...</p>
+      <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+        <div className="text-center bg-white p-8 rounded-lg shadow-lg">
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-200 border-t-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-700 font-medium">読み込み中...</p>
         </div>
       </main>
     )
@@ -34,26 +34,39 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="container mx-auto px-4 py-8">
-        <Group justify="space-between" mb="md">
-          <h1 className="text-3xl font-bold" style={{ color: '#000000' }}>
-            代講マッチングシステム
-          </h1>
-          <Group>
-            <Text size="sm" style={{ color: '#000000' }}>
-              こんにちは、{session.user?.name}さん
-            </Text>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => signOut({ callbackUrl: '/auth/signin' })}
-            >
-              ログアウト
-            </Button>
+        <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+          <Group justify="space-between" mb="md">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-800 mb-2">
+                代講マッチングシステム
+              </h1>
+              <p className="text-gray-600">塾講師の代講調整を効率化</p>
+            </div>
+            <Group>
+              <div className="text-right">
+                <Text size="sm" className="text-gray-600">
+                  こんにちは、
+                </Text>
+                <Text size="md" className="font-semibold text-gray-800">
+                  {session.user?.name}さん
+                </Text>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                color="red"
+                onClick={() => signOut({ callbackUrl: '/auth/signin' })}
+              >
+                ログアウト
+              </Button>
+            </Group>
           </Group>
-        </Group>
-        <CalendarView />
+        </div>
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <CalendarView />
+        </div>
       </div>
     </main>
   )

@@ -44,53 +44,63 @@ export default function SignIn() {
   }
 
   return (
-    <Container size={420} my={40}>
-      <Title ta="center" mb="xl" style={{ color: '#000000' }}>
-        代講マッチングシステム
-      </Title>
-      
-      <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <form onSubmit={handleSubmit}>
-          <TextInput
-            label="メールアドレス"
-            placeholder="your@email.com"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            mb="md"
-          />
-          
-          <TextInput
-            label="パスワード"
-            placeholder="パスワード"
-            type="password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            mb="md"
-          />
-          
-          <Button
-            type="submit"
-            fullWidth
-            loading={loading}
-            mt="xl"
-          >
-            ログイン
-          </Button>
-          
-          <Group justify="center" mt="md">
-            <Anchor
-              component="button"
-              type="button"
-              size="sm"
-              onClick={() => router.push('/auth/signup')}
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            代講マッチングシステム
+          </h1>
+          <p className="text-gray-600">塾講師の代講調整を効率化</p>
+        </div>
+        
+        <Paper withBorder shadow="lg" p={40} radius="lg" className="bg-white">
+          <form onSubmit={handleSubmit}>
+            <TextInput
+              label="メールアドレス"
+              placeholder="your@email.com"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              mb="md"
+              size="md"
+            />
+            
+            <TextInput
+              label="パスワード"
+              placeholder="パスワード"
+              type="password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              mb="md"
+              size="md"
+            />
+            
+            <Button
+              type="submit"
+              fullWidth
+              loading={loading}
+              mt="xl"
+              size="md"
+              color="blue"
             >
-              アカウントをお持ちでない方はこちら
-            </Anchor>
-          </Group>
-        </form>
-      </Paper>
-    </Container>
+              ログイン
+            </Button>
+            
+            <Group justify="center" mt="md">
+              <Anchor
+                component="button"
+                type="button"
+                size="sm"
+                onClick={() => router.push('/auth/signup')}
+                className="text-blue-600 hover:text-blue-800"
+              >
+                アカウントをお持ちでない方はこちら
+              </Anchor>
+            </Group>
+          </form>
+        </Paper>
+      </div>
+    </div>
   )
 }

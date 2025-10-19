@@ -65,69 +65,81 @@ export default function SignUp() {
   }
 
   return (
-    <Container size={420} my={40}>
-      <Title ta="center" mb="xl" style={{ color: '#000000' }}>
-        アカウント作成
-      </Title>
-      
-      <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-          <TextInput
-            label="名前"
-            placeholder="山田太郎"
-            required
-            {...form.getInputProps('name')}
-            mb="md"
-          />
-          
-          <TextInput
-            label="メールアドレス"
-            placeholder="your@email.com"
-            required
-            {...form.getInputProps('email')}
-            mb="md"
-          />
-          
-          <TextInput
-            label="パスワード"
-            placeholder="パスワード"
-            type="password"
-            required
-            {...form.getInputProps('password')}
-            mb="md"
-          />
-          
-          <TextInput
-            label="パスワード確認"
-            placeholder="パスワード確認"
-            type="password"
-            required
-            {...form.getInputProps('confirmPassword')}
-            mb="xl"
-          />
-          
-          <Button
-            type="submit"
-            fullWidth
-            loading={loading}
-            mb="md"
-          >
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">
             アカウント作成
-          </Button>
-          
-          <Group justify="center">
-            <Anchor
-              component="button"
-              type="button"
-              size="sm"
-              onClick={() => router.push('/auth/signin')}
+          </h1>
+          <p className="text-gray-600">代講マッチングシステムに参加</p>
+        </div>
+        
+        <Paper withBorder shadow="lg" p={40} radius="lg" className="bg-white">
+          <form onSubmit={form.onSubmit(handleSubmit)}>
+            <TextInput
+              label="名前"
+              placeholder="山田太郎"
+              required
+              {...form.getInputProps('name')}
+              mb="md"
+              size="md"
+            />
+            
+            <TextInput
+              label="メールアドレス"
+              placeholder="your@email.com"
+              required
+              {...form.getInputProps('email')}
+              mb="md"
+              size="md"
+            />
+            
+            <TextInput
+              label="パスワード"
+              placeholder="パスワード"
+              type="password"
+              required
+              {...form.getInputProps('password')}
+              mb="md"
+              size="md"
+            />
+            
+            <TextInput
+              label="パスワード確認"
+              placeholder="パスワード確認"
+              type="password"
+              required
+              {...form.getInputProps('confirmPassword')}
+              mb="xl"
+              size="md"
+            />
+            
+            <Button
+              type="submit"
+              fullWidth
+              loading={loading}
+              mb="md"
+              size="md"
+              color="blue"
             >
-              既にアカウントをお持ちの方はこちら
-            </Anchor>
-          </Group>
-        </form>
-      </Paper>
-    </Container>
+              アカウント作成
+            </Button>
+            
+            <Group justify="center">
+              <Anchor
+                component="button"
+                type="button"
+                size="sm"
+                onClick={() => router.push('/auth/signin')}
+                className="text-blue-600 hover:text-blue-800"
+              >
+                既にアカウントをお持ちの方はこちら
+              </Anchor>
+            </Group>
+          </form>
+        </Paper>
+      </div>
+    </div>
   )
 }
 

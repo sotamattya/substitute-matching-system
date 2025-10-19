@@ -15,20 +15,21 @@ export default function Error({
   }, [error])
 
   return (
-    <Container size="sm" my="xl">
-      <Paper shadow="sm" p="xl" radius="md">
-        <Title order={2} ta="center" mb="md" c="black">
-          エラーが発生しました
-        </Title>
-        <Text ta="center" mb="xl" c="dimmed">
-          申し訳ございません。予期しないエラーが発生しました。
-        </Text>
-        <div style={{ textAlign: 'center' }}>
-          <Button onClick={reset} variant="outline">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <Paper shadow="lg" p={40} radius="lg" className="bg-white text-center">
+          <div className="text-6xl mb-4">⚠️</div>
+          <Title order={2} mb="md" className="text-gray-800">
+            エラーが発生しました
+          </Title>
+          <Text mb="xl" className="text-gray-600">
+            申し訳ございません。予期しないエラーが発生しました。
+          </Text>
+          <Button onClick={reset} variant="outline" color="blue" size="md">
             再試行
           </Button>
-        </div>
-      </Paper>
-    </Container>
+        </Paper>
+      </div>
+    </div>
   )
 }
