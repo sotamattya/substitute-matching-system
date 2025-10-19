@@ -6,7 +6,7 @@ import { prisma } from '@/lib/db'
 // 個別シフトの取得
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -18,9 +18,10 @@ export async function GET(
       )
     }
 
+    const { id } = await params
     const shift = await prisma.shift.findUnique({
       where: {
-        id: params.id
+        id
       },
       include: {
         teacher: {
@@ -70,7 +71,7 @@ export async function GET(
 // シフトの更新
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -82,12 +83,13 @@ export async function PUT(
       )
     }
 
+    const { id } = await params
     const { title, description, startTime, endTime, subject, grade, location, status } = await request.json()
 
     // シフトの存在確認と権限チェック
     const existingShift = await prisma.shift.findUnique({
       where: {
-        id: params.id
+        id
       }
     })
 
@@ -122,7 +124,7 @@ export async function PUT(
     // シフトの更新
     const updatedShift = await prisma.shift.update({
       where: {
-        id: params.id
+        id
       },
       data: {
         ...(title && { title }),
@@ -164,7 +166,7 @@ export async function PUT(
 // シフトの削除
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -176,10 +178,11 @@ export async function DELETE(
       )
     }
 
+    const { id } = await params
     // シフトの存在確認と権限チェック
     const existingShift = await prisma.shift.findUnique({
       where: {
-        id: params.id
+        id
       }
     })
 
@@ -201,7 +204,7 @@ export async function DELETE(
     // シフトの削除
     await prisma.shift.delete({
       where: {
-        id: params.id
+        id
       }
     })
 

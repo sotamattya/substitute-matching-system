@@ -6,7 +6,7 @@ import { prisma } from '@/lib/db'
 // 個別代講依頼の取得
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -18,9 +18,10 @@ export async function GET(
       )
     }
 
+    const { id } = await params
     const substituteRequest = await prisma.substituteRequest.findUnique({
       where: {
-        id: params.id
+        id
       },
       include: {
         shift: {
@@ -72,7 +73,7 @@ export async function GET(
 // 代講依頼の引き受け・拒否
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -84,6 +85,7 @@ export async function PUT(
       )
     }
 
+    const { id } = await params
     const { action } = await request.json() // 'accept' または 'reject'
 
     if (!action || !['accept', 'reject'].includes(action)) {
@@ -96,7 +98,7 @@ export async function PUT(
     // 代講依頼の存在確認
     const substituteRequest = await prisma.substituteRequest.findUnique({
       where: {
-        id: params.id
+        id
       },
       include: {
         shift: true
@@ -134,7 +136,7 @@ export async function PUT(
           where: {
             shiftId: substituteRequest.shiftId,
             id: {
-              not: params.id
+              not: id
             },
             status: 'PENDING'
           },
@@ -146,7 +148,7 @@ export async function PUT(
         // この代講依頼を承認
         await tx.substituteRequest.update({
           where: {
-            id: params.id
+            id
           },
           data: {
             status: 'ACCEPTED',
@@ -168,7 +170,7 @@ export async function PUT(
       // 拒否の場合
       await prisma.substituteRequest.update({
         where: {
-          id: params.id
+          id
         },
         data: {
           status: 'REJECTED',
@@ -180,7 +182,7 @@ export async function PUT(
     // 更新された代講依頼を取得
     const updatedRequest = await prisma.substituteRequest.findUnique({
       where: {
-        id: params.id
+        id
       },
       include: {
         shift: {
@@ -230,7 +232,7 @@ export async function PUT(
 // 代講依頼の削除
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -242,10 +244,11 @@ export async function DELETE(
       )
     }
 
+    const { id } = await params
     // 代講依頼の存在確認と権限チェック
     const substituteRequest = await prisma.substituteRequest.findUnique({
       where: {
-        id: params.id
+        id
       }
     })
 
@@ -275,7 +278,7 @@ export async function DELETE(
     // 代講依頼の削除
     await prisma.substituteRequest.delete({
       where: {
-        id: params.id
+        id
       }
     })
 
