@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 自分のシフトには代講依頼を作成できない
-    if (shift.teacherId === session.user.id) {
+    if (shift.teacherId === session.user?.id) {
       return NextResponse.json(
         { error: '自分のシフトには代講依頼を作成できません' },
         { status: 400 }
@@ -119,7 +119,7 @@ export async function POST(request: NextRequest) {
     const existingRequest = await prisma.substituteRequest.findFirst({
       where: {
         shiftId: shiftId,
-        createdById: session.user.id,
+        createdById: session.user?.id,
         status: {
           in: ['PENDING', 'ACCEPTED']
         }
@@ -139,7 +139,7 @@ export async function POST(request: NextRequest) {
         shiftId,
         reason,
         priority: priority as any,
-        createdById: session.user.id,
+        createdById: session.user?.id,
         status: 'PENDING'
       },
       include: {

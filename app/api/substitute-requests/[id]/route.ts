@@ -113,7 +113,7 @@ export async function PUT(
     }
 
     // シフトの作成者のみ引き受け・拒否可能
-    if (substituteRequest.shift.teacherId !== session.user.id) {
+    if (substituteRequest.shift.teacherId !== session.user?.id) {
       return NextResponse.json(
         { error: 'この代講依頼を処理する権限がありません' },
         { status: 403 }
@@ -152,7 +152,7 @@ export async function PUT(
           },
           data: {
             status: 'ACCEPTED',
-            acceptedById: session.user.id
+            acceptedById: session.user?.id
           }
         })
 
@@ -174,7 +174,7 @@ export async function PUT(
         },
         data: {
           status: 'REJECTED',
-          acceptedById: session.user.id
+          acceptedById: session.user?.id
         }
       })
     }
@@ -260,7 +260,7 @@ export async function DELETE(
     }
 
     // 作成者のみ削除可能
-    if (substituteRequest.createdById !== session.user.id) {
+    if (substituteRequest.createdById !== session.user?.id) {
       return NextResponse.json(
         { error: 'この代講依頼を削除する権限がありません' },
         { status: 403 }

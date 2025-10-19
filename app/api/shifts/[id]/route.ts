@@ -101,7 +101,7 @@ export async function PUT(
     }
 
     // 作成者または管理者のみ更新可能
-    if (existingShift.teacherId !== session.user.id && session.user.role !== 'ADMIN') {
+    if (existingShift.teacherId !== session.user?.id && session.user?.role !== 'ADMIN') {
       return NextResponse.json(
         { error: 'このシフトを更新する権限がありません' },
         { status: 403 }
@@ -194,7 +194,7 @@ export async function DELETE(
     }
 
     // 作成者または管理者のみ削除可能
-    if (existingShift.teacherId !== session.user.id && session.user.role !== 'ADMIN') {
+    if (existingShift.teacherId !== session.user?.id && session.user?.role !== 'ADMIN') {
       return NextResponse.json(
         { error: 'このシフトを削除する権限がありません' },
         { status: 403 }

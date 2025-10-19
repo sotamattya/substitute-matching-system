@@ -112,7 +112,7 @@ export async function POST(request: NextRequest) {
         subject,
         grade: grade || null,
         location: location || null,
-        teacherId: session.user.id,
+        teacherId: session.user?.id,
         status: 'SCHEDULED'
       },
       include: {
