@@ -1,7 +1,21 @@
 import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { prisma } from '@/lib/db'
 import bcrypt from 'bcryptjs'
+
+// ビルド時にはPrismaを動的にインポート
+const getPrisma = async () => {
+  // ビルド時やデータベースURLがない場合はnullを返す
+  if (!process.env.DATABASE_URL || process.env.NEXT_PHASE === 'phase-production-build') {
+    return null
+  }
+  try {
+    const { prisma } = await import('@/lib/db')
+    return prisma
+  } catch (error) {
+    console.error('Failed to import Prisma:', error)
+    return null
+  }
+}
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -17,8 +31,8 @@ export const authOptions: NextAuthOptions = {
         }
 
         try {
-          // ビルド時にはデータベース接続を試行しない
-          if (process.env.NODE_ENV === 'production' && !process.env.DATABASE_URL) {
+          const prisma = await getPrisma()
+          if (!prisma) {
             return null
           }
 
@@ -74,4 +88,5 @@ export const authOptions: NextAuthOptions = {
     signIn: '/auth/signin',
   },
   debug: process.env.NODE_ENV === 'development',
+  secret: process.env.NEXTAUTH_SECRET,
 }
